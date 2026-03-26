@@ -18,6 +18,7 @@ from ._api_v2_topics import create_topics_router
 from ._api_v2_transcripts import RawEncoding, create_transcripts_router
 from ._api_v2_validations import create_validation_router
 from ._openapi import build_openapi_schema
+from .databricks_auth import DatabricksForwardedAuthMiddleware
 from .invalidationTopics import InvalidationTopic
 from .types import ViewConfig
 
@@ -39,6 +40,7 @@ def v2_api_app(
         title="Inspect Scout Viewer API",
         version=API_VERSION,
     )
+    app.add_middleware(DatabricksForwardedAuthMiddleware)
     app.include_router(create_config_router(view_config=view_config))
     app.include_router(create_topics_router())
     app.include_router(create_transcripts_router())
