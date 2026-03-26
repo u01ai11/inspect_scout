@@ -14,12 +14,24 @@ pip install git+https://github.com/meridianlabs-ai/inspect_scout
 
 ## Development
 
-To work on development of Inspect Scout, clone the repository and install with the `-e` flag and `[dev]` optional dependencies:
+To work on development of Inspect Scout, clone the repository and install development dependencies:
 
 ```bash
 git clone https://github.com/meridianlabs-ai/inspect_scout
 cd inspect_scout
-pip install -e ".[dev]"
+pip install ".[dev]"
+```
+
+If you're using `uv`, use:
+
+```bash
+uv pip install ".[dev]"
+```
+
+For Databricks source development, include the Databricks extra:
+
+```bash
+uv pip install ".[dev,databricks]"
 ```
 
 Run linting, formatting, and tests via

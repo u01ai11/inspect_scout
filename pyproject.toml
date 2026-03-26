@@ -84,6 +84,7 @@ doc = [
     "types-Markdown",
 ]
 dist = ["twine", "build"]
+databricks = ["databricks-sql-connector>=3.0.0"]
 
 [dependency-groups]
 dev = [
@@ -115,6 +116,7 @@ doc = [
     "pyyaml",
 ]
 dist = ["twine", "build"]
+databricks = ["databricks-sql-connector>=3.0.0"]
 
 [tool.hatch.build]
 only-packages = true
