@@ -8,7 +8,7 @@ You can populate a transcript database in a variety of ways depending on where y
 
 1. [Inspect Logs](#inspect-logs): Read transcript data from Inspect eval log files.
 
-2. [Arize Phoenix](#arize-phoenix), [LangSmith](#langsmith), [Logfire](#logfire), [MLFlow](#mlflow), and [W&B Weave](#wb-weave): Read transcript data from LLM observability platforms.
+2. [Arize Phoenix](#arize-phoenix), [LangSmith](#langsmith), [Logfire](#logfire), [MLFlow](#mlflow), [W&B Weave](#wb-weave), and [Databricks SQL](#databricks-sql): Read transcript data from observability and warehouse platforms.
 
 3. [Claude Code](#claude-code): Read transcript data from local Claude Code sessions.
 
@@ -274,6 +274,43 @@ Claude Code transcripts are mapped to the database schema as follows:
 | `task_id` | Session slug (conversation summary) |
 | `agent` | `"claude-code"` |
 
+
+
+## Databricks SQL
+
+Scout can import transcripts from Databricks SQL tables using the `databricks()` source.
+
+```python
+from inspect_scout import transcripts_db
+from inspect_scout.sources import databricks
+
+async with transcripts_db("s3://my-transcript-db/") as db:
+    await db.insert(databricks(
+        catalog="main",
+        schema="analytics",
+        transcript_table="participantresponseconversational",
+        turns_table="participantresponseconversationalturn",
+        survey_id="my-survey-id",  # optional
+    ))
+```
+
+By default, connection settings are read from:
+
+- `DATABRICKS_SERVER_HOSTNAME`
+- `DATABRICKS_HTTP_PATH`
+- `DATABRICKS_TOKEN`
+
+You can also pass `server_hostname`, `http_path`, and `access_token` directly.
+
+### On-behalf-of-user authorization (Databricks Apps)
+
+When running behind Databricks App user authorization, Scout reads forwarded headers from each request and can use `x-forwarded-access-token` automatically when `access_token` isn't explicitly provided.
+
+Supported forwarded identity headers include:
+
+- `x-forwarded-user`
+- `x-forwarded-email`
+- `x-forwarded-preferred-username`
 
 ## Transcript API
 
